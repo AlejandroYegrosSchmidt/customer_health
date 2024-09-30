@@ -1,2 +1,1 @@
-Esta herramienta fue creada para crear un nuevo conjunto de datos 
-Ver el ejemplo "resultados.csv"
+Este proyecto fue creado con el objetivo de desarrollar una metodología de trabajo que permita a los analistas de negocio evaluar la "salud" de los clientes de sus empresas
