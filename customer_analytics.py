@@ -13,4 +13,6 @@ diag = diagnostic(
     col_customer_type='_canal_cliente',
     select_customer='17017manora'
 )
+
 universal = diag.universal_analytic(customer_list=['17017manora']).T.reset_index()
+frecuency = diag.benchmark(indicator=5)
