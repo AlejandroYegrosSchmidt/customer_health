@@ -1,5 +1,12 @@
-Este proyecto fue creado con el objetivo de desarrollar una metodología de trabajo que permita a los analistas de negocio evaluar la "salud" de los clientes de sus empresas
+This proyect was created with the finally to develop one tool that help to analize the general health of the clients using the folling indicator
 
-Es posible crear un diagnóstico que compara los resultados de un determinado tipo de cliente con sus similares dentro del mismo data set. 
+1. Days since last sales
+2. Customer age in days 
+3. Rencey
+4. Nro SKU
+5. Frecuency
+6. Indicator Key
 
-Por ejemplo, si existen clientes catalogados como "Mayorista" entonces el diagnóstico comparará cada cliente mayorista contral el universo de los cliente mayoristas ignorando a otros posibles universos que puede existir en el dataset
+Using this indicators the script returns two report
+1. Benchmark
+2. Indicator outcome
