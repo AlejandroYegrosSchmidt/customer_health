@@ -111,28 +111,28 @@ class diagnostic():
         else:
             df.columns = ['customer','result']
         return df
-    def recencia(self,universo=False):
-        """La recencia son los días que pasan desde que un cliente hace una nueva compra"""
+    def recency(self,universo=False):
+        """La recency son los días que pasan desde que un cliente hace una nueva compra"""
         df = self.dataset(universo=universo)
         df = df.groupby([self.date,self.customer_code]).agg({self.ikey:'sum'}).reset_index()
         nro_customer = df[self.customer_code].unique()
         result = []
         for c in nro_customer:
             df_ = df[df[self.customer_code]==c].sort_values(by=self.date, ascending=True)
-            df_['recencia'] = df_.groupby(self.customer_code)[self.date].diff().dt.days
-            df_ = df_.groupby([self.customer_code]).agg({'recencia':'mean'}).fillna(0).reset_index()
-            df_.recencia = df_.recencia.astype('int64')
+            df_['recency'] = df_.groupby(self.customer_code)[self.date].diff().dt.days
+            df_ = df_.groupby([self.customer_code]).agg({'recency':'mean'}).fillna(0).reset_index()
+            df_.recency = df_.recency.astype('int64')
             result.append(df_)
         result = pd.concat(result, ignore_index=True)
         # Creamos los rangos del universo usando los mínimos y máximos
-        universo_rango = list(range(result.recencia.min(),result.recencia.max()+1))
-        universo_rango = pd.DataFrame(data=universo_rango, columns=['recencia'])
+        universo_rango = list(range(result.recency.min(),result.recency.max()+1))
+        universo_rango = pd.DataFrame(data=universo_rango, columns=['recency'])
         # Creamos una variable para "topear" la cantidad máxima de bins
-        if result.recencia.max() > 100: max = 100 
-        else: max=int(result.recencia.mean())
+        if result.recency.max() > 100: max = 100 
+        else: max=int(result.recency.mean())
         if universo == True:
-            rango = pd.cut(universo_rango.recencia, bins=100, precision=0).unique()
-            values = list(result.recencia)
+            rango = pd.cut(universo_rango.recency, bins=100, precision=0).unique()
+            values = list(result.recency)
             resultado = []
             for r in rango:
                 contador=0
@@ -250,7 +250,7 @@ class diagnostic():
         """
         days_since_last_sales = 1
         customer_age_days = 2
-        recencia = 3
+        recency = 3
         nro_sku = 4
         frequency = 5
         sum_ikey = 6
@@ -258,7 +258,7 @@ class diagnostic():
         funciones = {
             1: self.days_since_last_sales,
             2: self.customer_age_days,
-            3: self.recencia,
+            3: self.recency,
             4: self.nro_sku,
             5: self.frequency,
             6: self.sum_ikey
@@ -294,7 +294,7 @@ class diagnostic():
         title = {
             1: 'Days since last sales',
             2: 'Customer age in days',
-            3: 'Recencia',
+            3: 'recency',
             4: 'Nro Sku',
             5: 'Frecuency',
             6: 'Indicator key'}
@@ -306,11 +306,11 @@ class diagnostic():
             plt.legend(['orange=universo', f'Client result: {result.customer.max()}'], title='Legend')
             plt.xlabel('range_id')
         return result
-    def universal_analytic(self, customer_list):
+    def indicator_outcome(self, customer_list):
         title = {
             1: 'Days since last sales',
             2: 'Customer age in days',
-            3: 'Recencia',
+            3: 'Recency',
             4: 'Nro Sku',
             5: 'Frecuency',
             6: 'Indicator key'
