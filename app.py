@@ -44,19 +44,19 @@ def app():
         gr.Markdown('# Upload your csv file:')
         with gr.Row():
             file = gr.File(label='Upload your csv file')
-        gr.Markdown('# Input Setting:')
+        gr.Markdown('# Write the name of column that contains:')
         with gr.Row():
             # ==================================================
             # Create the customer list
             # ==================================================
 
             with gr.Column():
-                col_date = gr.Textbox(label='Column that contains dates')
-                col_ikey = gr.Textbox(label='Column that contains an indicator key' )
-                col_customer_type = gr.Textbox(label='Column that contains a customer type' )
+                col_date = gr.Textbox(label='Dates')
+                col_ikey = gr.Textbox(label='Indicator key' )
+                col_customer_type = gr.Textbox(label='Customer type' )
             with gr.Column():
-                col_customer_code = gr.Textbox(label='Column that contains a customer code' )
-                col_sku_code = gr.Textbox(label='Column that contains a SKU code' )
+                col_customer_code = gr.Textbox(label='Customer code' )
+                col_sku_code = gr.Textbox(label='SKU code' )
         gr.Markdown('# Insert the customer code that wants to create the diagnostis')
         with gr.Row():
             customer_list = gr.Textbox(label='Customer Code')
