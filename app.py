@@ -7,6 +7,7 @@ How Py.customer_health work:
 Py.customer_health creates a universe for each type of customer, and within each universe, it generates six indicators. For each indicator, it creates an index value used to evaluate each customer. The indicators are as follows: 
 
 Each index values have the range from 0 to 100 where 0 it is a low (bad) values and 100 it is hight values (good) 
+
 1-Days since last sales: Days have passed between the most recent transaction of the selected customer and the maximum date in the dataset
 2-Customer age in days:It is the age of the customer, calculated using the date of the first transaction and the date of last transaction
 3-Recency: It is the average days that have passed between each transaction of the customer
