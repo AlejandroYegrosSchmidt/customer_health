@@ -4,6 +4,7 @@ from libs.customer_health import diagnostic
 
 intro_text = '''
 How Py.customer_health work:
+
 Py.customer_health creates a universe for each type of customer, and within each universe, it generates six indicators. For each indicator, it creates an index value used to evaluate each customer. The indicators are as follows: 
 
 1-Days since last sales: Days have passed between the most recent transaction of the selected customer and the maximum date in the dataset
