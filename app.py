@@ -6,7 +6,7 @@ from libs.customer_health import diagnostic
 
 def test(*args):
     args = list(args)
-    df = pd.read_csv(args[0])
+    df = pd.read_csv(args[0],low_memory=False)
 
     diag = diagnostic(
         data=df,

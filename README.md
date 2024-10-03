@@ -10,3 +10,6 @@ This proyect was created with the finally to develop one tool that help to anali
 Using this indicators the script returns two report
 1. Benchmark
 2. Indicator outcome
+
+To test the script you can access:
+https://huggingface.co/spaces/AlejandroSchmidtYegros/Py.customer_health
