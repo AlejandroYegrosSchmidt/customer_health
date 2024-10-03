@@ -44,7 +44,7 @@ def app():
         gr.Markdown('# Upload your csv file:')
         with gr.Row():
             file = gr.File(label='Upload your csv file')
-        gr.Markdown('# Write the name of column that contains:')
+        gr.Markdown('# Write the name of each column that contains:')
         with gr.Row():
             # ==================================================
             # Create the customer list
