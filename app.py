@@ -17,9 +17,6 @@ Py.customer_health creates a universe for each type of customer, and within each
 Each index values have the range from 0 to 100 where 0 it is a low (bad) values and 100 it is hight values (good) 
 '''
 
-
-
-
 def test(*args):
     args = list(args)
     df = pd.read_csv(args[0],low_memory=False)
