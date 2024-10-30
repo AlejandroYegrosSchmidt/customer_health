@@ -446,10 +446,10 @@ class financial_diagnostics:
         
 
 # Usage
-pdf_path = r'C:\Users\aleja\Desktop\Data Science\GitHub\py.customer_health\libs\Estado Financiero 2022.pdf'
-financial_diagnostics = financial_diagnostics(pdf_path)
+#pdf_path = r'C:\Users\aleja\Desktop\Data Science\GitHub\py.customer_health\libs\Estado Financiero 2022.pdf'
+#financial_diagnostics = financial_diagnostics(pdf_path)
 #data = financial_diagnostics.extract_balanced()
-data = financial_diagnostics.liquidez(ratio=5)
+#data = financial_diagnostics.liquidez(ratio=5)
 
 
 
