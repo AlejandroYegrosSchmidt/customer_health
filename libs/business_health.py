@@ -421,7 +421,7 @@ class financial_diagnostics:
         return df
 
     def ratios_liquidez(self, ratio=None):
-        datos = financial_diagnostics.extract_balanced()
+        datos = self.extract_balanced()
         def cuenta(nro_cuenta=None):
             cuenta = datos[datos.codigo == nro_cuenta]
             cuenta = list(cuenta.monto)[0]
@@ -441,18 +441,11 @@ class financial_diagnostics:
         elif ratio ==5:
             # Capital de trabajo
             ratio_result = cuenta(nro_cuenta='1.01')- cuenta(nro_cuenta='2.01')
+
+        
         return ratio_result
         
         
-
-# Usage
-#pdf_path = r'C:\Users\aleja\Desktop\Data Science\GitHub\py.customer_health\libs\Estado Financiero 2022.pdf'
-#financial_diagnostics = financial_diagnostics(pdf_path)
-#data = financial_diagnostics.extract_balanced()
-#data = financial_diagnostics.liquidez(ratio=5)
-
-
-
 
 
 
