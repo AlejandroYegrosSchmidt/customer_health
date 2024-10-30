@@ -8,9 +8,12 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt 
+import pdfplumber
+import re
 from sklearn.preprocessing import MinMaxScaler
 
-class diagnostic():
+
+class customer_diagnostic():
     def __init__(self,data,col_date,col_customer_code,col_sku_code,ikey,col_customer_type,select_customer=None):
         """ Se debe indicar los nombres de las columnas en la que se va a encontrar los datos"""
         self.path = data
@@ -344,3 +347,114 @@ class diagnostic():
         column_names = ['customer_code'] + [title[i] for i in range(1, 7)]
         informe = pd.DataFrame(final_report, columns=column_names)
         return informe
+
+class financial_diagnostics:
+    """
+    A class for extracting word-level data from financial PDFs using PyMuPDF.
+    """
+
+    def __init__(self, pdf_path):
+        self.pdf_path = pdf_path
+
+    def extract_data(self):
+        """
+        Extracts word-level data from each page of the PDF.
+
+        Returns:
+            list of str: A list of text lines extracted from the PDF.
+        """
+
+        try:
+            with pdfplumber.open(self.pdf_path) as pdf:
+                text = [line for page in pdf.pages for line in page.extract_text().splitlines()]
+                return text
+        except Exception as e:
+            print(f"Error extracting word data: {e}")
+
+    def filter_list(self, lista, valor_inicio, valor_fin):
+        """
+        Filters a list to retain elements between two specified values.
+
+        Args:
+            lista: The list to filter.
+            valor_inicio: The starting value.
+            valor_fin: The ending value.
+
+        Returns:
+            list: A filtered list containing elements between the specified values.
+        """
+
+        valor_inicio = valor_inicio.lower()
+        valor_fin = valor_fin.lower()
+
+        try:
+            indice_inicio = lista.index(valor_inicio) + 1
+            indice_fin = lista.index(valor_fin)
+            return lista[indice_inicio:indice_fin]
+        except ValueError:
+            print(f"Error: Search values not found in lista. valor_inicio: {valor_inicio}, valor_fin: {valor_fin}")
+            return []
+
+    def extract_balanced(self):
+        """
+        Extracts balanced financial data from the PDF and returns a DataFrame.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing the extracted financial data.
+        """
+        text = self.extract_data()
+        text = [elemento.lower() for elemento in text]
+        # Filter the text based on the specified criterial
+        filtered_text = self.filter_list(text, '6. balance general', '7. estados de resultados')
+
+        # Create a list of dictionaries to store the data
+        data = []
+        for line in filtered_text[1:]:
+            match = re.match(r"(\S+)\s+(\S.*)\s+(\S+)", line)
+            if match:
+                code, description, amount = match.groups()
+                amount = amount.replace(".", "")
+                data.append({"codigo": code, "descripcion": description, "monto": amount})
+        # Create the DataFrame
+        df = pd.DataFrame(data)
+        df['monto'] = pd.to_numeric(df['monto'], errors='coerce')
+        return df
+
+    def ratios_liquidez(self, ratio=None):
+        datos = financial_diagnostics.extract_balanced()
+        def cuenta(nro_cuenta=None):
+            cuenta = datos[datos.codigo == nro_cuenta]
+            cuenta = list(cuenta.monto)[0]
+            return cuenta
+        if ratio == 1:
+            # Razón de liquiedez = Activo corriente / Pasivo Corriente
+            ratio_result = cuenta(nro_cuenta='1.01') / cuenta(nro_cuenta='2.01')
+        elif ratio ==2:
+            # Ratio de solvencia:  Activo total / Pasivo total 
+            ratio_result = cuenta(nro_cuenta='1') / cuenta(nro_cuenta='2')
+        elif ratio ==3:
+            # Prueba acida: activos corrientes - bienes de cambio(inventario)  / pasivo corriente
+            ratio_result = (cuenta(nro_cuenta='1.01') - cuenta(nro_cuenta='1.01.04')) / cuenta(nro_cuenta='2.01')
+        elif ratio ==4:
+            # Prueba acida menor:  Disponibilidad / Pasivo corriente
+            ratio_result = cuenta(nro_cuenta='1.01.01') / cuenta(nro_cuenta='2.01')
+        elif ratio ==5:
+            # Capital de trabajo
+            ratio_result = cuenta(nro_cuenta='1.01')- cuenta(nro_cuenta='2.01')
+        return ratio_result
+        
+        
+
+# Usage
+pdf_path = r'C:\Users\aleja\Desktop\Data Science\GitHub\py.customer_health\libs\Estado Financiero 2022.pdf'
+financial_diagnostics = financial_diagnostics(pdf_path)
+#data = financial_diagnostics.extract_balanced()
+data = financial_diagnostics.liquidez(ratio=5)
+
+
+
+
+
+
+
+
